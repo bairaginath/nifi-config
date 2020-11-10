@@ -1,19 +1,23 @@
 package com.github.hermannpencole.nifi.config.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.github.hermannpencole.nifi.config.model.Connection;
 import com.github.hermannpencole.nifi.swagger.client.ConnectionsApi;
 import com.github.hermannpencole.nifi.swagger.client.FlowApi;
 import com.github.hermannpencole.nifi.swagger.client.ProcessGroupsApi;
-import com.github.hermannpencole.nifi.swagger.client.model.*;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import com.github.hermannpencole.nifi.swagger.client.model.ConnectableDTO;
+import com.github.hermannpencole.nifi.swagger.client.model.ConnectionDTO;
+import com.github.hermannpencole.nifi.swagger.client.model.ConnectionEntity;
+import com.github.hermannpencole.nifi.swagger.client.model.ProcessGroupEntity;
+import com.github.hermannpencole.nifi.swagger.client.model.ProcessGroupFlowEntity;
+import com.github.hermannpencole.nifi.swagger.client.model.RevisionDTO;
 
 @Singleton
 public class ConnectionsUpdater {
@@ -35,9 +39,14 @@ public class ConnectionsUpdater {
      */
     public void updateConnections(List<Connection> connectionsConfiguration, ProcessGroupFlowEntity componentSearch) { //List<ConnectionEntity> currentConnections, List<ProcessorEntity> processors, String id) {
         List<ConnectionEntity> currentConnections = componentSearch.getProcessGroupFlow().getFlow().getConnections();
-        Map<String, Connection> connectionMap = connectionsConfiguration
-                .stream()
-                .collect(Collectors.toMap(Connection::getName, Function.identity()));
+//        Map<String, Connection> connectionMap = connectionsConfiguration
+//                .stream()
+//                .collect(Collectors.toMap(Connection::getName, Function.identity()));
+        
+        Map<String, Connection> connectionMap = new HashMap<String, Connection>();
+        for (Connection con : connectionsConfiguration) {
+        	connectionMap.put(con.getName(),con);
+        }
 
         currentConnections.forEach(
                 entity -> {

@@ -85,10 +85,10 @@ public class UpdateProcessorService {
 
         //generate clientID
         String clientId = flowapi.generateClientId();
-        updateComponent(configuration, componentSearch, clientId);
+        //updateComponent(configuration, componentSearch, clientId);
 
         //controller
-        updateControllers(configuration, processGroupFlowId, clientId);
+        //updateControllers(configuration, processGroupFlowId, clientId);
 
         createRouteService.createRoutes(configuration.getConnectionPorts(), optionNoStartProcessors);
 

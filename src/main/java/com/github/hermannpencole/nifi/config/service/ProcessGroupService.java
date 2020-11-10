@@ -185,7 +185,9 @@ public class ProcessGroupService {
                 Set<?> set = listing.get(i);
                 for (Object object : set) {
                     if (object instanceof ProcessorEntity) {
+                    	try {
                         processorService.setState((ProcessorEntity) object, ProcessorDTO.StateEnum.RUNNING);
+                    	}catch(Exception e) { e.printStackTrace();}
                     } else if (object instanceof PortEntity) {
                         portService.setState((PortEntity) object, PortDTO.StateEnum.STOPPED);
                     }
@@ -213,6 +215,7 @@ public class ProcessGroupService {
         try {
             List<Set<?>> listing = reorder( processGroupFlow.getProcessGroupFlow());
             for (int i = 0; i < (listing.size()); i++) {
+            	try {
                 Set<?> set = listing.get(i);
 
                 if (set.size()>0 && set.stream().findFirst().get() instanceof ConnectionEntity) {
@@ -236,6 +239,7 @@ public class ProcessGroupService {
                         portService.setState((PortEntity) object, PortDTO.StateEnum.STOPPED);
                     }
                 }
+            	}catch(Exception e) {e.printStackTrace();}
             }
             for (ProcessGroupEntity procGroupInConf : processGroupFlow.getProcessGroupFlow().getFlow().getProcessGroups()) {
                 ProcessGroupFlowEntity processGroupFlowEntity = flowapi.getFlow(procGroupInConf.getId());
